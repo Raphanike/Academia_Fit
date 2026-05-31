@@ -14,7 +14,7 @@ import Spinner from './components/ui/Spinner.jsx'
 
 // HOME SIMPLES (SEM REDIRECIONAR AUTOMÁTICO)
 function Home() {
-  const { profile, loading } = useAuth()
+  const { profile, loading, signOut } = useAuth()
 
   if (loading) {
     return (
@@ -24,19 +24,39 @@ function Home() {
     )
   }
 
-  // Só mostra algo simples na home
+  async function handleRelogar() {
+    try {
+      await signOut()
+      window.location.href = '/login'
+    } catch (error) {
+      console.error(error)
+      alert('Erro ao sair da conta')
+    }
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center flex-col gap-4">
-      <h1 className="text-2xl font-bold">Bem-vindo ao FitCoach 💪</h1>
+      <h1 className="text-2xl font-bold">
+        Bem-vindo ao FitCoach 💪
+      </h1>
 
       {!profile ? (
         <a href="/login" className="text-blue-500 underline">
           Ir para login
         </a>
       ) : (
-        <p className="text-gray-400">
-          Logado como: {profile.role}
-        </p>
+        <>
+          <p className="text-gray-400">
+            Logado como: {profile.role}
+          </p>
+
+          <button
+            onClick={handleRelogar}
+            className="px-4 py-2 bg-red-500 text-white rounded"
+          >
+            Sair e entrar novamente
+          </button>
+        </>
       )}
     </div>
   )
