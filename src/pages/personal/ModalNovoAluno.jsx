@@ -29,7 +29,7 @@ async function handleSubmit(e) {
     }
 
 const { data, error } = await supabase.functions.invoke(
-  'criar-aluno',
+  'quick-worker',
   {
     headers: {
       Authorization: `Bearer ${session.access_token}`,
